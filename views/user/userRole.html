@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+  	<link rel="shortcut icon"  href="/static/img/favicon.ico">
+  	<script src="/static/js/jquery.min.js" type="text/javascript"></script>
+     <!-- // <script type="text/javascript" language="javascript" src="/static/datatable/jquery-1.10.2.min.js"></script> -->
+  	<script type="text/javascript">
+  function allocation(){
+       $.ajax({
+      		async:true, //请勿改成异步，下面有些程序依赖此请数据
+      		type : "POST",
+      		data:{userId:{{.User.Id}},roleId:$('input[name="roleId"]:checked').val()},
+      		url: "/cstore/user/allocation",
+      		dataType:'json',
+      		success: function(r){
+
+      			// var r = $.parseJSON(r);
+      			if(r.status){
+      			  // window.dialogArguments.location.reload();
+		          alert("分配成功！！");
+		          window.close();
+              	}else{
+              		alert("分配失败！！");
+                };
+       		}
+      	});
+      }
+  </script>
+	{{template "/template/right.tpl"}}
+  </head>
+  
+  <body>
+<br/>
+<br/>  
+		<table class="ttab" height="100" width="70%" border="0" cellpadding="0" cellspacing="1"
+			align="center">
+			<tr>
+				<td height="30"
+					 colspan="2">
+					<div align="center">
+					<font color="blue" size="3" ><b>分配角色</b></font>
+					</div>
+				</td>
+			</tr>
+			<tr>	
+					<td height="30"width="20%" >
+						<div align="right" class="STYLE1" >
+								用户名：
+						</div>
+					</td>
+					<td >
+						<div align="left" class="STYLE1"  style="padding-left:10px;">
+						{{.User.Uname}}
+						</div>
+					</td>
+				</tr>
+				<tr>	
+					<td height="30"width="20%" >
+						<div align="right" class="STYLE1" >
+								所属角色
+						</div>
+					</td>
+					<td >
+						<div align="left" class="STYLE1"  style="padding-left:10px;">
+						
+						<font color="blue">{{.UserRole}}</font>
+						</div>
+					</td>
+				</tr>
+				<tr>
+				<td colspan="2">
+				<table class="listtable" width="100%">
+      <tr>
+        <td width="8" background="">&nbsp;</td>
+        <td>
+        <table class="ttab" width="100%" cellspacing="1" onmouseover="changeto()"  onmouseout="changeback()">
+          <tr>
+            <td width="3%" height="22" background="" >
+            </td>
+ 			<td width="15%" height="22" background=""  class="STYLE1">角色名</td>
+            <td width="5%" height="22" background="" ><span class="STYLE1">是否禁用</span></td>
+            <td width="12%" height="22" background="" ><span class="STYLE1">描述</span></td>
+          </tr>
+          
+          <!---->
+          {{range .RoleList}}
+
+          <tr>
+            <td height="20" >
+              <input type="radio" name="roleId" value={{.Id}} />
+            </td>
+            <td height="20" ><span class="STYLE1">{{.Name}}</span></td>
+            <td height="20" ><span class="STYLE1">
+             {{if .Isnormal}}
+            <font color="blue">正常</font>
+            {{else}}
+            <font color="red">禁用</font>
+            {{end}}
+            </span></td>
+            <td height="20" ><span class="STYLE1">{{.Description}}</span></td>
+          </tr>
+          {{end}}
+		<!---->
+        </table></td>
+        <td width="8" background="">&nbsp;</td>
+      </tr>
+    </table>
+				</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="padding: 10px">
+						<div align="center">
+			 				<input type="button" value="　保　存　" class="input_btn_style1" onclick="allocation();"/>　　　　
+			 				<input id="backBt" type="button" value="　关　闭　" class="input_btn_style1" onclick="javascript:window.close();"/>
+		 				</div>
+					</td>
+				</tr>
+		</table>
+  </body>
+</html>

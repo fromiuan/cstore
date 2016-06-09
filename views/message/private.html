@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>列表</title>
+
+		<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+	    <link rel="stylesheet" type="text/css" href="/static/css/dataTables.bootstrap.css">
+		<link rel="stylesheet" href="/static/css/select2.css" />
+ 		<link rel="stylesheet" href="/static/css/matrix-style.css" />
+
+		<script type="text/javascript" language="javascript" src="/static/datatable/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" language="javascript" src="/static/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" language="javascript" src="/static/js/dataTables.bootstrap.js"></script>
+	
+		<script type="text/javascript">
+	
+		var oTable;
+		$(document).ready(function() {
+		       oTable=initTable();
+		    });
+		    function initTable() {
+		         var actionUrl='../message/private';
+		       var table = $('#example').dataTable({
+		            "bFilter": false, 
+		            "bAutoWidth": false,  
+		            "sPaginationType" : 'full_numbers',
+		            "bPaginate": true, //翻页功能
+		            "bDestroy" : true,
+		            "bProcessing" : true,
+		            "sAjaxSource" : actionUrl,
+		            "iDisplayLength":10,
+		            "aLengthMenu": [[10, 15,20, 50, -1], [10, 15, 20,50, "All"]],
+		            "bServerSide" : true,
+		            "bSort":true,
+		            "aoColumns" : [ 
+		            	  {
+			                "mDataProp": "mesid",
+			                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+			                    $(nTd).html("<input type='checkbox' align='center' name='checkList' value='" + sData + "'>"); }
+					      },
+					     {"mDataProp" : "mesid",},
+		            	 {"mDataProp" : "user",},		        
+		                 {"mDataProp" : "name",},
+		                 {"mDataProp" : "statuszhi",},
+		                 {"mDataProp" : "addtime",},
+		                 {
+			                "mDataProp": "mesid",
+			                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+
+			                    $(nTd).html("<a href='javascript:void(0);' onclick='_deleteFun(" + sData + ")'>删除</a>");
+			                }
+            			}],
+		            "oLanguage" : {
+		                "sProcessing" : "正在加载中......",
+		                "sLengthMenu" : "每页显示 _MENU_ 条记录",
+		                "sZeroRecords" : "没有数据！",
+		                "sEmptyTable" : "表中无数据存在！",
+		                "sInfo" : "当前显示 _START_ 到 _END_ 条，共 _TOTAL_ 条记录",
+		                "sInfoEmpty" : "显示0到0条记录",
+		                "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+		                "oPaginate" : {
+		                    "sFirst" : "首页",
+		                    "sPrevious" : "上一页",
+		                    "sNext" : "下一页",
+		                    "sLast" : "末页"
+		                }
+		            }
+		        });
+				return table;
+		    }
+	
+	
+		function _deleteFun(mesid) {
+		    $.ajax({
+		        url: "/cstore/message/responddelect",
+		        data: {"mesid": mesid},
+		        type: "post",
+		        success: function (r) {
+		            if (r.status) {
+		                oTable.fnReloadAjax(oTable.fnSettings());
+		            } else {
+		                alert(r.info);
+		            }
+		        }, error: function (error) {
+		            console.log(error);
+		        }
+		    });
+		}
+			/**
+			table刷新表格
+			*/ 
+		 	$.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings) {
+		    this.fnClearTable(this);
+		    this.oApi._fnProcessingDisplay(oSettings, true);
+		    var that = this;
+		 
+		    $.getJSON(oSettings.sAjaxSource, null, function (json) {
+		        for (var i = 0; i < json.aaData.length; i++) {
+		            that.oApi._fnAddData(oSettings, json.aaData[i]);
+		        }
+		        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+		        that.fnDraw(that);
+		        that.oApi._fnProcessingDisplay(oSettings, false);
+		    });
+		}
+		</script>
+	</head>
+
+	<body> 
+		<div  >
+ 			 <h3>消息管理 <img src="/static/img/right.png"><small>全部消息</small></h3>
+	 			 <div class="cen_left_line">
+	 			 <hr width=100% size=1 color=#00ffff style="FILTER: alpha(opacity=100,finishopacity=0,style=3)">
+				</div>
+		</div>	
+		<div>
+			<table class="table table-bordered data-table" cellpadding="0" cellspacing="0" border="1" class="display"
+				id="example">
+				<thead>
+					<tr>
+						<th style="width:2%" align="left"><input type="checkbox" style="left: auto; " id='checkAll' style=""></th>
+						<th style="width:5%">回复Id</th>
+						<th style="width:10%">发布者</th>
+						<th style="width:35%">消息内容</th>
+						<th style="width:15%">消息权限</th>
+						<th style="width:15%">发布时间</th>
+						<th style="width:13%;">操作</th>
+					</tr>
+				</thead>
+				<tbody id="data_body">
+				</tbody>
+				
+			</table>
+		</div>
+
+		   
+	</body>
+</html>

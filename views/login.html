@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+        <title>便利店后台管理中心</title><meta charset="UTF-8" />
+        <link rel="shortcut icon"  href="/static/img/favicon.ico">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css" />
+		<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="/static/css/matrix-login.css" />
+        <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet" />
+        
+
+    </head>
+    <body>
+        <div id="loginbox">            
+            <form id="loginform" class="form-vertical" action="/cstore/login.html"  method="post">
+                 <input type="hidden" name="isAjax" value="0"/> 
+				 <div class="control-group normal_text"> <h3><img src="/static/img/logo.png" alt="Logo" /></h3></div>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="background-color:#28B779;"><i class="icon-user"></i></span>
+                            <input type="text" placeholder="账号" name="uname" class="form-control" required autofocus/>
+                        </div>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <div class="input-group">
+                            <span class="input-group-addon" style="background-color:#FFB848;"><i class="icon-lock"></i></span>
+                            <input type="password" placeholder="密码" name="password" class="form-control" required/>
+                        </div>
+                    </div>
+                </div>
+                   
+                <div class="form-actions">
+                    <span class="pull-left"><a href="#" class="btn btn-info" id="to-recover">忘记密码?</a></span>
+                    <span class="pull-right"> <button class="btn btn-success" type="submit">我要登录</button></span>
+                </div>
+            </form>
+
+            <form id="recoverform" action="#" class="form-vertical">
+				<p class="normal_text">此功能暂未开放，如果忘记密码，请联系管理员</p>
+				
+                    <div class="controls">
+                        <div class="main_input_box">
+                            <span class="add-on bg_lo"><i class="icon-envelope"></i></span><input type="text" placeholder="邮箱" />
+                        </div>
+                    </div>
+               
+                <div class="form-actions" >
+                    <span class="pull-left"><a href="#" class="flip-link btn btn-success" id="to-login">&laquo; 返回到登录</a></span>
+                    <span class="pull-right"><a class="btn btn-info"/>Reecover</a></span>
+                </div>
+            </form>
+        </div>
+        
+        <script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>  
+        <script src="/static/js/matrix.login.js"></script> 
+      
+    </body>
+
+</html>

@@ -1,0 +1,98 @@
+{{template "/template/header.tpl"}}
+
+<body style="background: #10A64F" >
+<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+  <tr>
+    <td height="57"  ><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="110" height="57" >&nbsp;</td>
+        <td>
+        <table width="743" border="0" align="center" cellpadding="0" cellspacing="0">
+          <tr>
+            <td height="29"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="61" height="29"  >&nbsp;</td>
+                <td width="72" align="center">
+                    <a href="javascript:void(0);"  data-target="#myModal" data-toggle="modal" ><span style="color: #FFFFFF"class="glyphicon glyphicon-wrench">修改密码</span></a>
+                </td>
+                <td width="72" align="center"><a href="#"></a></td>
+                <td width="292" align="center" style="padding-left: ">
+                    <label style="color: red;font-size:30px;">后台管理系统</label>
+                </td>
+                <td width="43" align="center">
+                  <a href="/cstore/mainFrame" target="main"><span style="color: #FFFFFF"  class="glyphicon glyphicon-home">首页</span></a>
+                </td>
+                <td width="43" align="left">
+                    <a href="javascript:history.go(-1);" ><span style="color: #FFFFFF" class="glyphicon glyphicon-backward">后推</span></a>
+                 </td>
+                <td width="43" align="left">
+                    <a href="javascript:history.go(1);"><span style="color: #FFFFFF" class="glyphicon glyphicon-forward">前进</span></a></td>
+                <td width="44" align="center">
+                     <a href="javascript:window.parent.location.reload();"> <span style="color: #FFFFFF"  class="glyphicon glyphicon-refresh">刷新</span></a></td>
+                <td width="39">
+                    <a href="/cstore/logout" target="_parent"><span style="color: #FFFFFF" class="glyphicon glyphicon-log-out">退出</span></a></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+        <td width="102"  >&nbsp;</td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td height="26" ><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="180" height="26"  >&nbsp;</td>
+        <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="bottom">&nbsp;</td>
+          </tr>
+        </table></td>
+        <!--
+        <td width="200">  <span style="color: #FFFFFF;" >欢迎您: {{.userinfo.Nickname}}
+          角色: {{.roleName}} </span></td>
+          -->
+      </tr>
+    </table></td>
+  </tr>
+</table>
+
+
+
+
+
+<div   class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="padding:20px 20px 40px 80px;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+      </div>
+        <form id="form1" method="post" action="/cstore/changepwd">
+            <table align="center">
+                <tr align="center">
+                    <td style="padding-left:10px;"><h3><span style="color: red;">旧的密码：</span></h3></td>
+                    <td><input type="password" class="form-control" name="oldpwd"  placeholder="当前密码"required autofocus/></td>
+                </tr>
+                <tr align="center">
+                    <td style="padding-left:10px;"><h3><span style="color: red;">新的密码：</span></h3></td>
+                    <td><input type="password"  name="newpwd"  class="form-control" placeholder="修改密码"required/></td>
+                </tr>
+                <tr align="center">
+                    <td style="padding-left:10px;"><h3><span style="color: red;">重复密码：</span></h3></td>
+                    <td><input type="password"  name="reppwd" class="form-control" placeholder="重复密码"required/></td>
+                </tr>
+            </table>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-danger">修改</button>
+              </div>
+        </form>
+      
+    </div>
+  </div>
+</div>
+  <script src="http://cdn.staticfile.org/jquery/2.1.1-rc2/jquery.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+</body>
+</html>

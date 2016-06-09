@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>列表</title>
+		<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/static/css/select2.css" />
+ 		<link rel="stylesheet" href="/static/css/matrix-style.css" />
+		<link href="/static/respond/css/fonts.css" rel="stylesheet" type="text/css" />
+		<link href="/static/respond/css/icons.css" rel="stylesheet" type="text/css" />
+		<link href="/static/respond/css/admin/style.css" rel="stylesheet" type="text/css" />
+		<link href="/static/respond/css/admin/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="/static/huadong/css/cooker.css">
+		<link rel="stylesheet" href="/static/huadong/css/docs.css">
+		<link rel="stylesheet" href="/static/huadong/css/drawer.min.css">
+		<link rel="stylesheet" type="text/css" media="all" href="/static/data/daterangepicker-bs3.css"> 
+	    <link rel="stylesheet" type="text/css" media="all" href="/static/css/bootstrapcdn.css">
+		<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+		<script type="text/javascript" language="javascript" src="/static/datatable/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" language="javascript" src="/static/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" language="javascript" src="/static/js/dataTables.bootstrap.js"></script>
+	    <script type="text/javascript" src="/static/data/moment.js"></script>
+	    <script type="text/javascript" src="/static/data/daterangepicker.js"></script>
+		<script src="/static/huadong/js/iscroll.js"></script>
+		<script src="/static/huadong/js/jquery.drawer.min.js"></script>
+		<script type="text/javascript" src="/static/js/application.js"></script>
+		<script type="text/javascript" src="/static/js/flat-ui.min.js"></script>
+		<script type="text/javascript">
+		
+			$(document).ready(function(){
+			$('.drawer').drawer();
+			$('.js-trigger').click(function(){
+			 $('.drawer').drawer("open");
+			});
+			});
+		</script> 
+
+
+		<script type="text/javascript">
+	
+			var oTable;
+				$(document).ready(function() {
+		       		oTable=initTable();
+	        		//$("#btnSave").click(_addFun);
+		        	$("#myModal2").on("hidden.bs.modal", function() {
+	                $(this).removeData("bs.modal");
+
+	            });
+			
+		     $(function () { $('#myModal4').modal({
+				  backdrop:'static', 
+			      keyboard: false,
+				  show:false,
+			   })});   
+			
+
+	        $("#checkAll").on("click", function () {
+	               if ($(this).prop("checked") === true) {
+	                   $("input[name='checkList']").prop("checked", $(this).prop("checked"));
+	                   $('#example tbody tr').addClass('selected');
+	               } else {
+	                   $("input[name='checkList']").prop("checked", false);
+	                   $('#example tbody tr').removeClass('selected');
+	               }
+	           });
+		    });
+		    function initTable() {
+		         var actionUrl='../message/list';
+		       var table = $('#example').dataTable({
+
+					
+				     "sLoadingRecords": "正在加载数据...",
+				     "sZeroRecords": "暂无数据",
+				     // "stateSave": true,
+				     "iDisplayStart": 1, 
+				     "searching": false,
+				     "dom": 'rt<"bottom"iflp>',	
+		            "bFilter": false, 
+		            "bAutoWidth": false,  
+		            "sPaginationType" : 'full_numbers',
+		            "bPaginate": true, //翻页功能
+		            "bDestroy" : true,
+		            "bProcessing" : true,
+		            "sAjaxSource" : actionUrl,
+		            "iDisplayLength":10,
+		            "aLengthMenu": [[10, 15,20, 50, -1], [10, 15, 20,50, "All"]],
+		            "bServerSide" : true,
+		            "bSort":false,
+		            "aoColumns" : [ 
+		            	  {
+			                "mDataProp": "Id",
+			                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+			                    $(nTd).html("<input type='checkbox' align='center' name='checkList' id='checkList' value='" + sData + "'>"); }
+					      },
+					     {"mDataProp" : "Id",},
+					     {"mDataProp" : "Resplay",},
+		            	 {"mDataProp" : "Name",},		        
+		                 {"mDataProp" : "Statusname",},
+		                 {"mDataProp" : "User",},
+		                 {"mDataProp" : "Addtime",},
+		                 {"mDataProp" : "Statuszhi",},  
+		                 {
+			                "mDataProp": "Id",
+			                "fnCreatedCell": function (nTd, sData, oData, iRow, iCol) {
+			                    $(nTd).html("<a  onclick='_editFun("+oData.Id+","+'"'+oData.Name+'"'+","+'"'+oData.Statusname+'"'+")' data-toggle='modal' data-target='#myModal2' style='margin-left:10px'><span class='glyphicon glyphicon-pencil'></span></a>&nbsp;&nbsp;").append("<a  onclick='_permFun("+oData.Id+","+'"'+oData.Name+'"'+","+'"'+oData.Statusname+'"'+","+'"'+oData.Status+'"'+")' data-toggle='modal' data-target='#myModal3' style='margin-left:10px'><span class='glyphicon glyphicon-check'></span></a>&nbsp;&nbsp;").append("<a  data-toggle='modal' data-target='#myModal1' style='margin-left:10px'><span class='glyphicon glyphicon-share'></span></a>&nbsp;&nbsp;").append("<a href='javascript:void(0);' style='margin-left:10px;margin-right:10px' onclick='_deleteFun(" + sData + ")'><span class='glyphicon glyphicon-remove'></span></a>&nbsp;&nbsp;");		                    
+			                }
+            			}],
+						"oLanguage" : {
+		                "sProcessing" : "正在加载中......",
+		                "sLengthMenu" : " _MENU_ 条",
+		                "sZeroRecords" : "没有数据！",
+		                "sEmptyTable" : "表中无数据存在！",
+		                "sInfo" : " _START_ - _END_ 条，共 _TOTAL_ 条",
+		                "sInfoEmpty" : "显示0到0条记录",
+		                "sInfoFiltered" : "数据表中共为 _MAX_ 条记录",
+		                "oPaginate" : {
+		                    "sFirst" : "首页",
+		                    "sPrevious" : "上一页",
+		                    "sNext" : "下一页",
+		                    "sLast" : "末页"
+		                }
+					            }
+					        });
+							return table;
+					    }
+	
+	 	//* 给角色分配权限 *//
+		function _permission(id) {
+		   var url = "/cstore/role/resource?Id="+id;
+				 var h_sp1 = 500;
+				 var w_sp1 = 350;
+				 var iTop2 = (window.screen.availHeight - 20 - h_sp1) / 2;
+				 var iLeft2 = (window.screen.availWidth - 10 - w_sp1) / 2;
+				 var params = 'menubar:no;toolbar:no;dialogHeight:' + h_sp1 + 'px;dialogWidth:' + w_sp1 + 'px;dialogLeft:' + iLeft2 + 'px;dialogTop:' + iTop2 + 'px;resizable:yes;scrollbars:0;resizeable:0;center:yes;location:no;status:no;scroll:no';
+				window.open(url, window, params)
+		}
+	
+		var   Iddd;
+		function _editFun(Id,Name,Statusname) {
+			Iddd=Id;
+		     if (Name!=""&&Name!=null) {
+		     	$("input[name='Name']").val(Name);
+		     }
+		     if (Statusname!=""&&Statusname!=null) {
+		     	$("input[name='Statusname']").val(Statusname)
+		     }
+		}
+
+
+
+		function _permFun(Id,Name,Statusname,Status,Statuszhi) {
+			Iddd=Id;
+			if (status!=""&&status!=null) {
+	            $("input[name='Static']").val(Status)
+		     }
+		     if (Statuszhi!=""&&Statuszhi!=null) {
+		     	$("input[name='Statuszhi']").val(Statuszhi)
+		     }
+		     
+		}
+
+
+	    /** 删除**/
+		function _deleteFun(id) {
+		    $.ajax({
+		        url: "/cstore/message/delete",
+		        data: {"Id": id},
+		        type: "post",
+		        success: function (r) {
+		            if (r.status) {
+		                oTable.fnReloadAjax(oTable.fnSettings());
+		            } else {
+		                alert(r.info);
+		            }
+		        }, error: function (error) {
+		            console.log(error);
+		        }
+		    });
+		}
+
+		/**批量修改权限**/
+		function allpremission(){
+        var chckBox = document.getElementsByName("checkList");  
+        var num = chckBox.length;  
+        var ids = "";  
+        for(var index =0 ; index<num ; index++){  
+            if(chckBox[index].checked){  
+                ids += chckBox[index].value + ",";                
+            }  
+        } 
+        alert(ids)
+        var chckBox = document.getElementsByName("checkList");  
+        var num = chckBox.length;  
+        var Statuses = "";  
+        for(var index =0 ; index<num ; index++){  
+            if(chckBox[index].checked){  
+                Statuses += $("input[name='Status']:checked ").val() + ",";                
+            }  
+        } 
+        alert(Statuses)
+		if(ids!=""){  
+	        if(window.confirm("确定修改所选的消息权限？")){ 
+				$.ajax({
+	            async:true,
+			        url: "/cstore/message/allpre",
+			        data:{
+			        	Id:ids,
+			        	Status:$("input[name='Status']:checked ").val(),
+			        	
+			        },
+			        type: "post",
+			       dataType:'json',
+				 	success:function(json){
+				 		alert("批量成功")
+							  oTable.fnReloadAjax(oTable.fnSettings());
+							  //that.oApi._fnAddData(oSettings, json.aaData[i]);
+
+				 		},
+		        error: function(error){
+		        	alert(Status);
+					 	alert("编辑失败"); 
+					 	console.log(error);
+					}  
+			    },'json');
+		        } 
+		    } 
+		}
+
+
+		/**修改消息 **/
+    	function _editmessage(){
+ 		    $.ajax({
+	            async:true,
+ 		        url: "/cstore/message/edit",
+ 		        data:{
+ 		        	Id:Iddd,
+ 		        	Name:$("input[name='Name']").val(),
+ 		        	Statusname:$("input[name='Statusname']").val()
+ 		        },
+
+ 		        type: "post",
+ 		        dataType:'json',
+  			 	success:function(json){
+                         //alert(Statusname);
+  						 oTable.fnReloadAjax(oTable.fnSettings());
+  			 		},
+		        error: function(error){
+					 	alert("编辑失败"); 
+					 	console.log(error);
+					}  
+ 		    },'json');   
+ 		}
+		
+ 		/**修改类型**/
+ 		function _permmessage(){
+ 		    $.ajax({
+	            async:true,
+ 		        url: "/cstore/message/permissions",
+ 		        data:{
+ 		        	Id:Iddd,
+ 		        	Status:$("input[name='Status']:checked ").val(),
+ 		        	Statuszhi:$("input[name='Statuszhi']").val()
+ 		        },
+ 		        type: "post",
+ 		        dataType:'json',
+  			 	success:function(json){
+  						 oTable.fnReloadAjax(oTable.fnSettings());
+
+  			 		},
+		        error: function(error){
+		        	alert(Status);
+					 	alert("编辑失败"); 
+					 	console.log(error);
+					}  
+ 		    },'json');
+ 		}
+
+
+
+        /**添加消息**/
+ 		function _addFun() {
+
+		$.ajax({
+			async:true,
+		    url: "/cstore/message/add",
+		    data: {
+ 		        	Resplay: $("input[name='Resplay']").val(),
+		    		Name: $("#Name").val(),
+		    		Statusname:$("#Statusname").val(),
+		    		Status:$("input[name='Status']:checked").val(),
+ 		        },
+		    type: "post",
+		    dataType:'json',
+  			 	success:function(json){
+  						 //oTable.fnReloadAjax(oTable.fnSettings());
+  						 alert("消息添加成功");
+
+  			 		},
+		        error: function(error){
+		        	alert(Status);
+					 	alert("编辑失败"); 
+					 	console.log(error);
+					}  
+ 		    },'json');
+		}
+        /*点击添加自动清除输入框内容*/
+			function _clean(){
+				
+				//$('.form-control').val('');
+				document.getElementById("Resplay").value="";
+				document.getElementById("Name").value="";
+				document.getElementById("Statusname").value="";
+				$("#Name").attr("value",'');
+
+			 }
+			/**table刷新表格*/ 
+		 	$.fn.dataTableExt.oApi.fnReloadAjax = function (oSettings) {
+		    this.fnClearTable(this);
+		    this.oApi._fnProcessingDisplay(oSettings, false);
+		    var that = this;
+		 		    $.getJSON(oSettings.sAjaxSource, null, function (json) {
+		        /* Got the data - add it to the table */
+		        for (var i = 0; i < json.aaData.length; i++) {
+		            that.oApi._fnAddData(oSettings, json.aaData[i]);
+		        }
+		        oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+		        that.fnDraw(that);
+		        that.oApi._fnProcessingDisplay(oSettings, false);
+		    });
+		}
+		</script>
+	</head>
+
+	<body> 
+		<div class="tnav row wrapper border-bottom white-bg page-heading">
+		<!-- <div class="col-sm-4"> -->
+           <!-- <h4 class="fl">消息管理</h4>
+           <ol class="breadcrumb">
+	           <li><a href="#">主页</a></li>
+	           <li><a href="#">消息管理</a></li>
+	           <li><strong>消息</strong></li>
+	           <li></li>
+            </ol> -->
+	<!-- </div> -->
+<ul id="breadcrumb">
+  <li><a href="#"><span class="icon icon-home"></span>首页</a></li>
+  <li><a href="#"><span class="icon icon-beaker"> </span> 消息管理</a></li>
+ <!--  <li><a href="#"><span class="icon icon-double-angle-right"></span> Breadcrumb</a></li>
+  <li><a href="#"><span class="icon icon-rocket"> </span> Getting started</a></li>
+  <li><a href="#"><span class="icon icon-arrow-down"> </span> Download</a></li> -->
+  <li><a href="#"><span class="icon icon-arrow-down"> </span> 全部消息</a></li>
+</ul>
+	</div>
+	<!-- head end -->	
+	<!--面包屑导航制作-->
+	
+
+
+
+	<!-- table star -->
+<div class="row col-lg-12">
+		<div class="wrapper wrapper-content animated fadeInUp">
+			<div class="ibox">
+	            <div class="ibox-tools rboor">
+						<div class="form-group" style="height: 50px;">
+                           	<div class=" input-group">
+	                                <input  placeholder="请输入关键字" id="searchbox1" name="searchbox1" class="input-sm form-control" style="margin:21px 8px 10px;width:24%">
+	                                 <button type="button" class="btn btn-sm btn-primary " style="margin:16px 5px 5px"> 搜索</button>
+	                                  <button class="btn btn-sm btn-primary button js-trigger"  style="margin:20px 10px 10px 50px" onclick="_close2()"><i class="im-search"></i> <span class="oi oi-menu"></span>高级搜索</button> 
+									<span class="input-group-btn" style="height:25px">	
+									<a  class="btn btn-sm btn-primary"  data-toggle='modal' data-target='#myModal4' id="addFun"   style="margin:20px 10px 10px 10px;" onclick="_clean()"><i class="im-plus"></i> 添加新消息</a>
+	                				<a  class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal6" style="margin:20px 10px 10px"><i class="im-pencil2"></i> 批量权限</a>
+	               					 <button id="delbutton" class="btn btn-sm btn-primary"  style="margin:20px 10px 10px;" onclick="delecheckbox()"><i class="im-remove4"></i>删除所选</button>
+										<button id="tb-refresh"  class="btn btn-sm btn-primary" style="margin:20px 50px 10px 25px;" onclick="window.parent.frames[1].location.reload()">
+										<i class="im-spinner10 fa-spin"  ></i> 刷新</button> 
+
+	                                </span>
+	                        </div>
+	                     </div>               
+	           	</div>
+        	</div>
+         </div>
+	<table class="table table-bordered data-table table-striped" cellpadding="0" cellspacing="0" border="1" class="display" name="example" id="example" style="margin-left:10px;margin-right:5px;">
+			<thead style="">
+				<tr>
+					<th style="width:1%" align="left" style="text-align:left;"><input type="checkbox" style="left: auto; " id='checkAll' style=""></th>
+					<th style="width:2%">ID</th>
+					<th style="width:15%">Replay</th>
+					<th style="width:30%">消息内容</th>
+					<th style="width:8%">消息类型</th>
+					<th style="width:8%">发布者</th>
+					<th style="width:15%">发布时间</th>
+					<th style="width:9%">权限</th>
+					<th style="width:12%;">操作</th>
+				</tr>
+			</thead>
+			<tbody id="data_body">
+			</tbody>
+	</table>
+</div>
+
+<!--分享消息-->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                  &times;
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               选择发送
+            </h4>
+         </div>
+         <div class="modal-body">
+         	分组选择：
+             <label class="checkbox-inline">
+                     <input type="checkbox" id="inlineCheckbox1" value="option1"> 分组一
+             </label>
+             <label class="checkbox-inline">
+                     <input type="checkbox" id="inlineCheckbox2" value="option2"> 分组二
+             </label>
+             <label class="checkbox-inline">
+                     <input type="checkbox" id="inlineCheckbox3" value="option3"> 分组三
+             </label>  
+			<div style="padding: 20px 0px 10px;">
+			  	<form class="bs-example bs-example-form" role="form">
+				    <div class="row">
+				        <div class="col-lg-6">
+				            <div class="input-group">
+				                    <span class="input-group-addon">
+				                              输入发送： <input type="checkbox">
+				                    </span>
+				                    <input type="text" class="form-control">
+				            </div>
+				        </div>
+				 </form>
+			</div>
+            <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" > 确定发送</button>
+            </div>
+        			</div>
+    			</div>
+ 			</div> 
+		</div>
+	</div>
+</div>
+<!--高级搜索-->
+<div class="drawer drawer-right" id="close2">
+<div class="drawer-toggle drawer-hamberger" style="backgroun-color:#FFF;display:none;"><span></span></div>
+<div class="drawer-main drawer-default">
+  <nav class="drawer-nav" role="navigation">
+    <div class="drawer-brand">
+       <div class="modal-body">   
+		<button type="button"  class="close" id="close1" aria-hidden="true" onclick="_close1()" style="background-image:url(/static/images/close12.png);background-position:center; background-repeat:repeat-x;width:22px">　</button>
+         	<div> <img src="/static/images/haoyue.jpg" width="350"  /> </div>
+
+         	 <div class="input-group" style="margin-top:20px">
+                 <span class="input-group-addon" >内　容</span>
+                 <input type="text" class="form-control" style="width:80%">
+            </div>
+            <div class="input-group" style="margin-top:3%">
+                 <span class="input-group-addon" >发布者</span>
+                 <input type="text" class="form-control" style="width:60%">
+            </div>
+            <div style="margin-top:3%">
+                  <div class="control-group">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon">时　间</span>
+                       <input type="text" readonly="readonly" style="width: 200px" name="reservation" id="reservation" class="form-control" value="2015-5-20- 2015-5-21"> 
+                     </div>
+                    </div>
+                  </div> 
+                <script type="text/javascript">
+	               $(document).ready(function() {
+	                  $('#reservation').daterangepicker(null, function(start, end, label) {
+	                    console.log(start.toISOString(), end.toISOString(), label);
+	                  });
+	               });
+                </script>
+            </div>
+			<div class="input-group" style="margin-top:3%">
+	            	<div class="form-group">
+	            	 <select class="form-control">
+					         <option>　请选择你需要的类型　　</option>
+					         <option>类型一</option>
+					         <option>类型二</option>
+					         <option>类型三</option>
+					         <option>类型四</option>
+					         <option>类型五</option>
+		      			 </select>
+	      			 </div>
+	        </div>
+			<div class="input-group" style="clear:both;margin-top:3%;border: 1px solid #DEDEDE;width:70%">
+                 <span class="input-group-addon" style="border-right: 1px solid #CCC;">权　限</span>
+                 <input type="checkbox"   class="form-control" style="margin-top:7px;width:15px;vertical:middle"> <label style="margin-top:7px;margin-left:-55px;font-size: 12px;">公开</label>
+ 				 <input type="checkbox"  class="form-control" style="margin-top:7px;margin-left:35px;width:15px;vertical:middle" > <label style="margin-top:7px;margin-left:30px;font-size: 12px;">隐私</label>
+            </div>         
+               <div style="margin-top:5%;margin-left:0%"> <button type="button" class="btn btn-primary" > 搜索</button> </div>
+       		 </div>
+    	</div>
+	</div>
+	<div class="menban" id="mengban" style="display:none">
+    </div>
+    <p class="drawer-nav-title"></p>
+    <ul class="drawer-nav-list"></ul>  
+ 	</nav>
+	</div>
+</div>
+
+<!--修改消息-->
+ <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" 
+               aria-hidden="true">×
+            </button>
+            <h4 class="modal-title" id="myModalLabel">修改消息</h4>
+         </div>
+         	<div class="modal-body">
+		 		<input type="hidden" name="Id" value={{.Message.Id}} />
+				<table class="ttab" height="100" width="85%" border="1" cellpadding="0" cellspacing="1" align="center">
+					<tr>
+						<td height="30" colspan="4">
+							<div align="center">
+								<font color="#1E90FF" size="3"><h3>编辑消息</h3> </font>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td height="30" width="20%">
+							<div align="right" >
+								消息内容：
+							</div>
+						</td>
+						<td>
+							<div align="left"  style="padding: 10px;">
+								<input style="width: 80%" class="form-control" name="Name" />
+							</div>
+						</td>
+					</tr>	
+					<tr>
+						<td height="30" width="20%">
+							<div align="right" >
+								消息类型：
+							</div>
+						</td>
+						<td>
+							<div align="left"  style="padding: 10px;">
+								<input style="width: 40%" class="form-control" name="Statusname" />
+							</div>
+						</td>	
+					</tr>				
+				</table>
+			</div>
+            <div class="modal-footer">
+              		<div align="center" style="padding-top: 10px;">
+              			<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="_editmessage()">保　存
+                		</button>
+					</div>	 
+           	</div>
+      </div>
+   </div>
+</div>
+<!--修改权限-->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+		         <div class="modal-header">
+		           				 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		          				  <h4 class="modal-title" id="myModalLabel">消息权限</h4>
+		         </div>
+		         <div class="modal-body">	
+				 		<table class="ttab" height="100" width="85%" border="1" cellpadding="0" cellspacing="1" align="center">
+						      <tr>
+							        <td height="30" colspan="4">
+									          <div align="center">
+									            <font color="blue" size="3"><h3>修改消息权限</h3> </font>
+									          </div>
+							        </td>
+						      </tr>
+		         
+					         <tr>
+						            <td height="30" width="15%">
+							                 <div align="right" >
+							                 消息权限：
+							                 </div>
+						            </td>
+						            <td>
+							                <div align="left"  style="padding: 10px;">
+							              
+							                      <input type="radio" name="Status" id="optionsRadios1" value="1"data-toggle="radio">
+							                      隐私
+							                      <input type="radio" name="Status" id="optionsRadios2" value="2" data-toggle="radio" checked="">
+							                      公开
+							                </div>
+				            		</td>
+					          </tr>    
+		        		</table>					
+		         </div>
+                <div class="modal-footer">
+                  		<div align="center" style="padding-top: 10px;">
+                  				<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="_permmessage()">保　存</button>
+						</div>	 
+                </div>
+     </div>
+   </div>
+</div>
+<!--批量修改权限-->
+<div class="modal fade" id="myModal6" tabindex="-1" role="dialog"  aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+		         <div class="modal-header">
+		           				 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		          				  <h4 class="modal-title" id="myModalLabel">消息权限</h4>
+		         </div>
+		         <div class="modal-body">	
+				 		<table class="ttab" height="100" width="85%" border="1" cellpadding="0" cellspacing="1" align="center">
+						      <tr>
+							        <td height="30" colspan="4">
+									          <div align="center">
+									            <font color="blue" size="3"><h3>修改消息权限</h3> </font>
+									          </div>
+							        </td>
+						      </tr>
+		         
+					         <tr>
+						            <td height="30" width="15%">
+							                 <div align="right" >
+							                 消息权限：
+							                 </div>
+						            </td>
+						            <td>
+							                <div align="left"  style="padding: 10px;">
+							              
+							                      <input type="radio" name="Status" id="optionsRadios1" value="1"data-toggle="radio">
+							                      隐私
+							                      <input type="radio" name="Status" id="optionsRadios2" value="2" data-toggle="radio" checked="">
+							                      公开
+							                </div>
+				            		</td>
+					          </tr>    
+		        		</table>					
+		         </div>
+                <div class="modal-footer">
+                  		<div align="center" style="padding-top: 10px;">
+                  				<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="allpremission()">保　存</button>
+						</div>	 
+                </div>
+     </div>
+   </div>
+</div>
+<!-- 消息的添加 -->
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" 
+               aria-hidden="true">×
+            </button>
+            <h4 class="modal-title" id="myModalLabel">
+               消息管理
+            </h4>
+         </div>
+         <div class="modal-body">
+		 		
+		 		
+		 		<input type="hidden" name="isAction" value="0"/>
+				<table class="ttab" height="100" width="85%" border="1" cellpadding="0" cellspacing="1" align="center">
+					<tr>
+						<td height="30" colspan="4">
+							<div align="center">
+								<font  size="3"><h3>添加消息</h3> </font>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td height="30" width="15%">
+							<div align="right" >
+								消息回复：
+							</div>
+						</td>
+						<td>
+							<div align="left"  style="padding: 10px;">
+								<input style="width:80%" name="Resplay" id="Resplay" class="form-control"  onKeyUp="ReplaceDot(this)"  />
+							</div>
+						</td>
+
+						
+					</tr>
+					<tr>
+						<td height="30" width="15%">
+							<div align="right" >
+								消息内容：
+							</div>
+						</td>
+						<td>
+							<div align="left"  style="padding: 10px;">
+								<input style="width:80%" name="Name" id="Name" class="form-control"/>
+							</div>
+						</td>					
+					</tr>
+                    <tr>
+	                        <td height="30" width="15%">
+							    <div align="right" >
+								      消息类型：
+							    </div>
+						    </td>
+						    <td>
+							<div align="left"  style="padding: 10px;">
+								<input style="width: 40%" id="Statusname"  class="form-control" />
+							</div>
+						    </td>
+                    </tr>
+					<tr>
+						<td height="30" width="15%">
+							<div align="right" >
+								消息权限：
+							</div>
+						</td>
+						<td>
+						    <div align="left"  style="padding: 10px;">
+							
+					            <input type="radio" name="Status" id="optionsRadios1" value="1" data-toggle="radio">
+					            隐私
+					            <input type="radio" name="Status" id="optionsRadios2" value="2" data-toggle="radio" checked="">
+					            公开
+					        </div>
+						</td>
+					</tr>	
+				</table>
+				
+							<div align="center" style="padding-top: 10px;">
+	                          <button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" onclick="_addFun()">保　存</button>
+							</div>	
+
+
+
+<script type="text/javascript" src="/static/js/application.js"></script>
+<script type="text/javascript" src="/static/js/flat-ui.min.js"></script>
+<script type="text/javascript">
+		function ReplaceDot(obj)
+				{
+				var oldValue=obj.value;
+				//逗号转换
+				while(oldValue.indexOf("，")!=-1)
+				{
+				obj.value=oldValue.replace("，",",");
+				oldValue=obj.value;
+				}
+				obj.value = oldValue;
+				//句号转换
+				while(oldValue.indexOf("。")!=-1)
+				{
+				obj.value=oldValue.replace("。",".");
+				oldValue=obj.value;
+				}
+				obj.value = oldValue;
+				//分号转换
+				while(oldValue.indexOf("；")!=-1)
+				{
+				obj.value=oldValue.replace("；",";");
+				oldValue=obj.value;
+				}
+				obj.value = oldValue;
+				}
+
+</script>
+
+<script type="text/javascript">
+	function delecheckbox(){  
+        var chckBox = document.getElementsByName("checkList");  
+        var num = chckBox.length;  
+        var ids = "";  
+        for(var index =0 ; index<num ; index++){  
+            if(chckBox[index].checked){  
+                ids += chckBox[index].value + ",";                
+            }  
+        } 
+        	alert("您选择的ID为"+ids)
+
+        if(ids!=""){  
+            if(window.confirm("确定删除所选记录？")){  
+                $.ajax( {  
+             		async: true,
+       				type: "POST",
+                     data: {
+                			Ids: ids
+           				 },
+                    url : "/cstore/message/alldelete", //要自行删除的action  
+                    dataType : 'json',  
+                    success : function(data) {  
+                        alert("删除成功");  
+                        oTable.fnReloadAjax(oTable.fnSettings());
+                    },  
+                    error : function(data) {  
+                        alert("系统错误，删除失败");  
+                    }  
+                });  
+            }  
+        }else{  
+            alert("请选择要删除的记录");  
+            }  
+        }  
+</script>
+<script type="text/javascript">
+  function _close1(){
+  	document.getElementById("close2").style.display="none";
+  }
+  function _close2(){
+  	document.getElementById("close2").style.display="";
+  }
+</script>
+
+
+
+      </div>
+   </div>
+</div>
+
+
+
+
+	</body>
+</html>
