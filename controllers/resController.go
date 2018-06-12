@@ -42,11 +42,11 @@ func (this *ResController) List() {
 		data["iTotalRecords"] = iLength
 		data["sEcho"] = sEcho
 		this.Data["json"] = &data
-		this.ServeJson()
+		this.ServeJSON()
 
 	} else {
 		this.Data["ActionUrl"] = "localhost:8080"
-		this.TplNames = "res/index.html"
+		this.TplName = "res/index.html"
 	}
 }
 
@@ -94,7 +94,7 @@ func (this *ResController) Add() {
 		this.Ctx.Redirect(302, "/cstore/res/add.html")
 	} else {
 
-		this.TplNames = "res/add.html"
+		this.TplName = "res/add.html"
 	}
 
 }
@@ -141,7 +141,7 @@ func (this *ResController) Edit() {
 		_, pRes := m.GetParentResource(0)
 		this.Data["pRes"] = pRes
 		this.Data["Resource"] = resource
-		this.TplNames = "res/edit.html"
+		this.TplName = "res/edit.html"
 	}
 
 }

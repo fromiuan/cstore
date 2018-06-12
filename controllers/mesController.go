@@ -53,10 +53,10 @@ func (this *MesController) List() {
 		data["iTotalRecords"] = iLength
 		data["sEcho"] = sEcho
 		this.Data["json"] = &data
-		this.ServeJson()
+		this.ServeJSON()
 	} else {
 		this.Data["ActionUrl"] = "localhost:8080"
-		this.TplNames = "message/index.html"
+		this.TplName = "message/index.html"
 	}
 
 }
@@ -82,7 +82,7 @@ func (this *MesController) Edit() {
 	}
 	this.Data["json"] = &message
 	fmt.Println(message)
-	this.ServeJson()
+	this.ServeJSON()
 
 }
 
@@ -104,7 +104,7 @@ func (this *MesController) Add() {
 			user := userinfo.Uname
 			message.User = user
 			this.Data["json"] = &message
-			this.ServeJson()
+			this.ServeJSON()
 			inserid, err := m.AddMessage(&message)
 			if err != nil {
 				fmt.Println("添加消息失败")
@@ -148,7 +148,7 @@ func (this *MesController) Permissions() {
 	}
 	this.Data["json"] = &message
 	fmt.Println(message)
-	this.ServeJson()
+	this.ServeJSON()
 
 }
 //批量修改权限
@@ -168,13 +168,13 @@ func (this *MesController) Allpre() {
 		if err != nil {
 		this.Rsp(false, "更新出现问题："+err.Error())
 		this.Data["json"] = &message
-		this.ServeJson()
+		this.ServeJSON()
 		}
 	}
 	message := new(m.Message)
 	this.Data["json"] = &message
 	fmt.Println(message)
-	this.ServeJson()
+	this.ServeJSON()
 }
 	
 // //  删除消息
@@ -250,10 +250,10 @@ func (this *MesController) Respond() {
 		data["iTotalRecords"] = iLength
 		data["sEcho"] = sEcho
 		this.Data["json"] = &data
-		this.ServeJson()
+		this.ServeJSON()
 	} else {
 		this.Data["ActionUrl"] = "localhost:8080"
-		this.TplNames = "message/respond.html"
+		this.TplName = "message/respond.html"
 	}
 
 }
@@ -288,10 +288,10 @@ func (this *MesController) Private() {
 		data["iTotalRecords"] = iLength
 		data["sEcho"] = sEcho
 		this.Data["json"] = &data
-		this.ServeJson()
+		this.ServeJSON()
 	} else {
 		this.Data["ActionUrl"] = "localhost:8080"
-		this.TplNames = "message/private.html"
+		this.TplName = "message/private.html"
 	}
 
 }

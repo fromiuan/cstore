@@ -45,11 +45,11 @@ func (this *UserController) List() {
 		data["iTotalRecords"] = iLength
 		data["sEcho"] = sEcho
 		this.Data["json"] = &data
-		this.ServeJson()
+		this.ServeJSON()
 
 	} else {
 		this.Data["ActionUrl"] = "localhost:8080"
-		this.TplNames = "user/index.html"
+		this.TplName = "user/index.html"
 	}
 }
 
@@ -93,7 +93,7 @@ func (this *UserController) Edit() {
 		}
 	} else {
 		this.Data["Resource"] = user
-		this.TplNames = "user/edit.html"
+		this.TplName = "user/edit.html"
 	}
 
 }
@@ -134,7 +134,7 @@ func (this *UserController) Add() {
 
 		this.Ctx.Redirect(302, "/cstore/user/add.html")
 	} else {
-		this.TplNames = "user/add.html"
+		this.TplName = "user/add.html"
 	}
 
 }
@@ -179,7 +179,7 @@ func (this *UserController) AllocationRole() {
 		}
 		this.Data["RoleList"] = &roleList
 		this.Data["UserRole"] = roleByUser.Name
-		this.TplNames = "user/userRole.html"
+		this.TplName = "user/userRole.html"
 	}
 }
 

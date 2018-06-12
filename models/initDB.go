@@ -80,7 +80,7 @@ func getConfig(flag int) (string, string) {
 	db_name := beego.AppConfig.String("db_name")
 	if flag == 1 {
 		fmt.Println("链接数据库")
-		orm.RegisterDriver("mysql", orm.DR_MySQL)
+		orm.RegisterDriver("mysql", orm.DRMySQL)
 		dns = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8&loc=Local", db_user, db_pass, db_host, db_port, db_name)
 	} else {
 		fmt.Println("创建数据库")

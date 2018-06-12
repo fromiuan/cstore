@@ -28,13 +28,13 @@ func (this *MainController) Index() {
 	tree := this.GetTree()
 	if this.IsAjax() {
 		this.Data["json"] = &tree
-		this.ServeJson()
+		this.ServeJSON()
 	} else {
 		groups := m.Groups()
 		this.Data["userinfo"] = userinfo
 		this.Data["groups"] = groups
 		this.Data["tree"] = &tree
-		this.TplNames = "index.tpl"
+		this.TplName = "index.tpl"
 	}
 }
 
@@ -52,7 +52,7 @@ func (this *MainController) Login() {
 			return
 		} else {
 			this.Data["err"] = err
-			this.TplNames = "err/error404.html"
+			this.TplName = "err/error404.html"
 			return
 		}
 
@@ -61,7 +61,7 @@ func (this *MainController) Login() {
 	if userInfo != nil {
 		this.Ctx.Redirect(302, "index.tpl")
 	}
-	this.TplNames = "login.html"
+	this.TplName = "login.html"
 }
 func (this *MainController) Logout() {
 	this.DelSession("userinfo")
@@ -97,10 +97,10 @@ func (this *MainController) ChangePwd() {
 	this.Rsp(false, "密码错误")
 }
 func (this *MainController) MainFrame() {
-	this.TplNames = "mainFrame.html"
+	this.TplName = "mainFrame.html"
 }
 func (this *MainController) Center() {
-	this.TplNames = "background/center.html"
+	this.TplName = "background/center.html"
 }
 
 func (this *MainController) Top() {
@@ -114,7 +114,7 @@ func (this *MainController) Top() {
 		this.Data["userinfo"] = userInfo
 		this.Data["roleName"] = roleName
 	}
-	this.TplNames = "background/top.html"
+	this.TplName = "background/top.html"
 }
 
 func (this *MainController) Left() {
@@ -128,8 +128,8 @@ func (this *MainController) Left() {
 		this.Data["tree"] = &tree
 		this.Data["ActionUrl"] = beego.AppConfig.String("ActionUrl")
 	}
-	this.TplNames = "background/left.html"
+	this.TplName = "background/left.html"
 }
 func (this *MainController) Tab() {
-	this.TplNames = "background/tab.html"
+	this.TplName = "background/tab.html"
 }

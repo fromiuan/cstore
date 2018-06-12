@@ -19,7 +19,7 @@ func init() {
 
 func (this *CommonController) Rsp(status bool, str string) {
 	this.Data["json"] = &map[string]interface{}{"status": status, "info": str}
-	this.ServeJson()
+	this.ServeJSON()
 }
 
 func (this *CommonController) GetResList(uname string, Id int64) []Tree {

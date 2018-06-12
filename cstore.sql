@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
-Source Server Version : 50620
+Source Server         : localhost_3306
+Source Server Version : 50617
 Source Host           : localhost:3306
 Source Database       : cstore
 
 Target Server Type    : MYSQL
-Target Server Version : 50620
+Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2015-02-25 10:34:30
+Date: 2018-06-12 17:41:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for `group`
+-- Table structure for group
 -- ----------------------------
 DROP TABLE IF EXISTS `group`;
 CREATE TABLE `group` (
@@ -35,7 +35,7 @@ INSERT INTO `group` VALUES ('1', '审核组', 'System', '2', '1');
 INSERT INTO `group` VALUES ('2', '客服组', '客服', '2', '1');
 
 -- ----------------------------
--- Table structure for `member`
+-- Table structure for member
 -- ----------------------------
 DROP TABLE IF EXISTS `member`;
 CREATE TABLE `member` (
@@ -63,7 +63,27 @@ CREATE TABLE `member` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `resource`
+-- Table structure for messsage
+-- ----------------------------
+DROP TABLE IF EXISTS `messsage`;
+CREATE TABLE `messsage` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `resplay` varchar(255) NOT NULL DEFAULT '',
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `status` bigint(20) NOT NULL DEFAULT '2',
+  `statusname` varchar(255) NOT NULL DEFAULT '',
+  `user` varchar(255) NOT NULL DEFAULT '',
+  `addtime` datetime NOT NULL,
+  `statuszhi` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of messsage
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for resource
 -- ----------------------------
 DROP TABLE IF EXISTS `resource`;
 CREATE TABLE `resource` (
@@ -104,7 +124,7 @@ INSERT INTO `resource` VALUES ('19', '资源添加', '7', 'resource_add', '1', '
 INSERT INTO `resource` VALUES ('20', ' 用户信息', '1000', 'user_show', '2', 'cstore/user/show  ', '2', '显示单个用户信息', '0');
 
 -- ----------------------------
--- Table structure for `resource_roles`
+-- Table structure for resource_roles
 -- ----------------------------
 DROP TABLE IF EXISTS `resource_roles`;
 CREATE TABLE `resource_roles` (
@@ -137,7 +157,22 @@ INSERT INTO `resource_roles` VALUES ('36', '19', '2');
 INSERT INTO `resource_roles` VALUES ('37', '7', '2');
 
 -- ----------------------------
--- Table structure for `role`
+-- Table structure for respond
+-- ----------------------------
+DROP TABLE IF EXISTS `respond`;
+CREATE TABLE `respond` (
+  `mesid` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL DEFAULT '0',
+  `user` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`mesid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of respond
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for role
 -- ----------------------------
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -157,7 +192,7 @@ INSERT INTO `role` VALUES ('2', '           admin', ' admin          ', '试的�
 INSERT INTO `role` VALUES ('3', '被的想法', 'vd', 'V的', '1');
 
 -- ----------------------------
--- Table structure for `storer`
+-- Table structure for storer
 -- ----------------------------
 DROP TABLE IF EXISTS `storer`;
 CREATE TABLE `storer` (
@@ -181,7 +216,7 @@ CREATE TABLE `storer` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for `user`
+-- Table structure for user
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -201,11 +236,11 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', '54dea6d17eba63690c1f8ec4b4888e99', 'Admin', 'qi19901212@163.com', '18510970061', '2', '孙凤齐哈哈哈', '2015-01-18 21:26:33', '2015-01-16 09:58:08');
+INSERT INTO `user` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'qi19901212@163.com', '18510970061', '2', '孙凤齐哈哈哈', '2015-01-18 21:26:33', '2015-01-16 09:58:08');
 INSERT INTO `user` VALUES ('4', 'sunqi', 'c42b11d1e88ea4d0e9f25fd9c0c9eb3e', '孙齐', 'qi19901212@163.com', '18311376490', '1', '这是一个go程序员', null, '2015-01-27 08:02:58');
 
 -- ----------------------------
--- Table structure for `user_roles`
+-- Table structure for user_roles
 -- ----------------------------
 DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
